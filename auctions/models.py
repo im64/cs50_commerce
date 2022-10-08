@@ -10,7 +10,7 @@ class Auction(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="auctioneer")
     name = models.CharField(max_length=128)
     descripton = models.TextField()
-    photo = models.BinaryField()
+    photo = models.ImageField(upload_to='img')
     
 
 class Bid(models.Model):

@@ -4,11 +4,31 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User
+from . import forms
+
+from .models import User, Auction
 
 
 def index(request):
     return render(request, "auctions/index.html")
+
+def add_auction(request):
+    if request.method != "POST":
+        form = forms.AddAuction()
+        return render(request, "auctions/add-auction.html", {
+            "form": form,
+        })
+
+    # POST
+    form = forms.AddAuction(request.POST, request.FILES)
+    if form.is_valid():
+        Auction(
+            user_id=request.user,
+            name=form.cleaned_data["name"],
+            descripton=form.cleaned_data["description"],
+            photo=form.files["photo"]
+        ).save()
+    return HttpResponseRedirect(reverse("index"))
 
 
 def login_view(request):
