@@ -12,6 +12,7 @@ class Auction(models.Model):
     descripton = models.TextField()
     starting_price = models.IntegerField(default=0)
     photo = models.ImageField(upload_to='img')
+    is_active = models.BooleanField(default=False)
     
 
 class Bid(models.Model):
