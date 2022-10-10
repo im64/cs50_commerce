@@ -9,7 +9,7 @@ class User(AbstractUser):
 class Auction(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="auctioneer")
     name = models.CharField(max_length=128)
-    descripton = models.TextField()
+    description = models.TextField()
     starting_price = models.IntegerField(default=0)
     photo = models.ImageField(upload_to='img')
     is_active = models.BooleanField(default=False)

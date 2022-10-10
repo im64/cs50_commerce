@@ -2,5 +2,10 @@
 
 {% block body %}
     <h2>Active Listings</h2>
-    
-{% endblock %}
+    {% for a in auctions %}
+        {{ a.name }}<br/>
+        <img src="{{ a.photo.url }}" alt="photo" width="250" height="250"/><br/>
+        {{ a.starting_price }}<br/>
+        {{ a.description }}<br/>
+    {% endfor %}
+{% endblock body %}

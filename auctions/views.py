@@ -10,7 +10,9 @@ from .models import User, Auction
 
 
 def index(request):
-    return render(request, "auctions/index.html")
+    return render(request, "auctions/index.html", {
+        "auctions": Auction.objects.filter(user_id=request.user.id)
+    })
 
 def add_auction(request):
     if request.method != "POST":
@@ -25,7 +27,7 @@ def add_auction(request):
         Auction(
             user_id=request.user,
             name=form.cleaned_data["name"],
-            descripton=form.cleaned_data["description"],
+            description=form.cleaned_data["description"],
             photo=form.files["photo"]
         ).save()
     return HttpResponseRedirect(reverse("index"))
