@@ -1,11 +1,20 @@
 {% extends "auctions/layout.html" %}
-
 {% block body %}
     <h2>Active Listings</h2>
-    {% for a in auctions %}
-        {{ a.name }}<br/>
-        <img src="{{ a.photo.url }}" alt="photo" width="250" height="250"/><br/>
-        {{ a.starting_price }}<br/>
-        {{ a.description }}<br/>
-    {% endfor %}
+    <div class="container">
+        <div class="row">
+            {% for a in auctions %}
+                <div class="col-sm border">
+                    <a href="{% url 'auction' a.id %}"><h2>{{ a.name }}</h2></a>
+                    <img src="{{ a.photo.url }}" alt="photo" width="250" height="250"/>
+                    <br/>
+                    <h4>{{ a.starting_price }}</h4>
+                </div>
+                {% if forloop.counter|divisibleby:3 %}
+                </div>
+                <div class="row">
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
 {% endblock body %}

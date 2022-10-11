@@ -6,13 +6,14 @@ from django.urls import reverse
 
 from . import forms
 
-from .models import User, Auction
+from .models import User, Auction, Bid
 
 
 def index(request):
     return render(request, "auctions/index.html", {
-        "auctions": Auction.objects.filter(user_id=request.user.id)
+        "auctions": Auction.objects.filter(is_active=True)
     })
+
 
 def add_auction(request):
     if request.method != "POST":
@@ -28,7 +29,9 @@ def add_auction(request):
             user_id=request.user,
             name=form.cleaned_data["name"],
             description=form.cleaned_data["description"],
-            photo=form.files["photo"]
+            photo=form.files["photo"],
+            starting_price=form.cleaned_data["price"],
+            is_active = True,
         ).save()
     return HttpResponseRedirect(reverse("index"))
 
@@ -83,3 +86,19 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/register.html")
+
+
+def auction(request, auction_id):
+    # Price block 
+    bids = Bid.objects.filter(auction_id=auction_id).order_by('-price')
+    auction = Auction.objects.get(pk=auction_id)
+    price = bids.first().price if bids.exists() else auction.starting_price
+
+
+    # if no bids, use starting price
+    
+    # if therere some use max value
+    return render(request, "auctions/auction.html", {
+        "auction": auction,
+        "price": price,
+    })

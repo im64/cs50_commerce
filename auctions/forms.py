@@ -8,3 +8,5 @@ class AddAuction(forms.Form):
     photo = forms.ImageField()
 
 
+class SetBid(forms.Form):
+    bid_value = forms.DecimalField(label="Enter your bid")
